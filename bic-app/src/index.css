@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bicGreen: #00E676;
+  --color-bicDark: #121212;
+  --color-bicCard: #1e1e1e;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bicDark);
+  color: white;
+  font-family: 'Inter', system-ui, sans-serif;
+}

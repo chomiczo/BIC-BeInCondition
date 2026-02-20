@@ -1,0 +1,148 @@
+/* --- NOWE STYLE: EKRAN GŁÓWNY I PRZYCISKI --- */
+
+.main-title {
+  text-align: center;
+  color: #00E676;
+  font-size: 28px;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background-color: #00E676;
+  color: #121212;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  text-transform: uppercase;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 14px;
+  background-color: transparent;
+  color: #aaaaaa;
+  border: 1px solid #333;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.huge-calories {
+  color: #00E676;
+  font-size: 48px;
+  margin: 10px 0;
+}
+
+/* Dziennik Posiłków (Dashboard) */
+.dashboard-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.summary-card {
+  background: #1e1e1e;
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.calories-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 8px solid #00E676;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calories-left {
+  font-size: 36px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.calories-label {
+  font-size: 12px;
+  color: #aaaaaa;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.calories-stats {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  color: #aaaaaa;
+  font-size: 14px;
+}
+
+.calories-stats strong {
+  color: #ffffff;
+}
+
+.meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meal-card {
+  background: #2a2a2a;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.meal-icon {
+  font-size: 28px;
+}
+
+.meal-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.meal-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #00E676;
+  font-weight: bold;
+}
+
+.btn-scan {
+  width: 100%;
+  padding: 20px;
+  background-color: #00E676;
+  color: #121212;
+  border: none;
+  border-radius: 50px; /* Zaokrąglony przycisk w stylu pływającym */
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 8px 25px rgba(0, 230, 118, 0.4);
+}
