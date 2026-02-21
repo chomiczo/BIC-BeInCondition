@@ -389,7 +389,7 @@ export default function Scanner({ onClose, onScan }) {
             <h1 className="text-xl font-black mb-2 uppercase leading-tight text-[#00E676]">{foundProduct.name}</h1>
             <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Oszacowano: {foundProduct.kcalPer100g} kcal</p>
 
-            <button onClick={() => onScan(foundProduct.kcalPer100g)} className="w-full py-6 bg-[#00E676] text-black font-black rounded-3xl uppercase tracking-widest shadow-lg active:scale-95">Dodaj {foundProduct.kcalPer100g} kcal</button>
+            <button onClick={() => onScan({ name: foundProduct.name, kcal: foundProduct.kcalPer100g })} className="w-full py-6 bg-[#00E676] text-black font-black rounded-3xl uppercase tracking-widest shadow-lg active:scale-95">Dodaj {foundProduct.kcalPer100g} kcal</button>
             <button onClick={() => { setStatus('idle'); isProcessingRef.current = false; }} className="mt-4 text-[9px] font-black text-gray-600 uppercase tracking-widest">Anuluj</button>
           </div>
         )}
