@@ -3,6 +3,7 @@ import { calculateBMR, calculateTDEE, calculateFinalGoal } from './calculator';
 import Scanner from './Scanner';
 import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
+import { GoogleGenerativeAI } from "@google/generative-ai"; //
 
 window.globalAiModel = null;
 
@@ -10,6 +11,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('diary');
   const [isScanning, setIsScanning] = useState(false);
   const [pendingCalories, setPendingCalories] = useState(null);
+  const [aiMenu, setAiMenu] = useState(null);
+  const [isMenuLoading, setIsMenuLoading] = useState(false);
 
   // --- ŁADOWANIE AI ---
   useEffect(() => {
@@ -75,6 +78,20 @@ function App() {
 
   const bmi = (weight / ((height / 100) ** 2)).toFixed(1);
   const bmiStatus = bmi < 18.5 ? 'Niedowaga' : bmi < 25 ? 'Norma' : bmi < 30 ? 'Nadwaga' : 'Otyłość';
+  const generateAiMenu = async () => {
+    setIsMenuLoading(true);
+    try {
+      const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const prompt = `Jesteś ekspertem dietetyki aplikacji BIC. Użytkownik ma cel: ${goal === 'lose' ? 'Schudnąć' : goal === 'gain' ? 'Przytyć' : 'Utrzymać wagę'}. Cel kaloryczny na dziś: ${finalCalories} kcal. Ułóż prosty, pyszny jadłospis na dziś (Śniadanie, Obiad, Kolacja, Przekąska), aby zsumowane kalorie były bliskie temu limitowi. Zwróć krótki tekst używając emoji, wymień danie i przypisaną mu liczbę kalorii. Zakończ krótkim słowem motywacyjnym.`;
+
+      const result = await model.generateContent(prompt);
+      setAiMenu(result.response.text());
+    } catch (error) {
+      setAiMenu("Błąd połączenia z AI. Spróbuj ponownie później.");
+    }
+    setIsMenuLoading(false);
+  };
 
   return (
     <div className="max-w-md mx-auto min-h-screen flex flex-col text-slate-200 relative font-sans bg-[#0a0a0c] overflow-hidden">
@@ -161,22 +178,73 @@ function App() {
         </div>
       )}
 
-      {/* GŁÓWNY WIDOK */}
+      {/* GŁÓWNY WIDOK - BIC by Aleksander Chomicz */}
       {step === 3 && (
         <div className="flex flex-col gap-6 w-full pb-32 pt-10">
           {activeTab === 'diary' ? (
             <div className="px-6 animate-in slide-in-from-left duration-300">
               <div className="flex justify-between items-end mb-8">
-                <div><p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.4em] mb-1">Witaj, {name}</p><h2 className="text-4xl font-black text-white italic tracking-tighter uppercase">Dziennik</h2></div>
-                <button onClick={() => { if (window.confirm("Zresetować bilans?")) setConsumedCalories(0); }} className="bg-white/5 p-4 rounded-3xl border border-white/10 text-slate-500"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></button>
+                <div>
+                  <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.4em] mb-1">Witaj, {name}</p>
+                  <h2 className="text-4xl font-black text-white italic tracking-tighter uppercase">Dziennik</h2>
+                </div>
+                <button
+                  onClick={() => {
+                    if (window.confirm("Zresetować bilans?")) {
+                      setConsumedCalories(0);
+                      setMeals({ breakfast: 0, lunch: 0, dinner: 0, snacks: 0 });
+                      setAiMenu(null); // Resetujemy też proponowane menu
+                    }
+                  }}
+                  className="bg-white/5 p-4 rounded-3xl border border-white/10 text-slate-500 active:scale-90 transition-transform"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </button>
               </div>
 
-              <div className="bg-[#161618] p-10 rounded-[4rem] shadow-2xl flex flex-col items-center border border-white/10 relative overflow-hidden mb-10">
+              <div className="bg-[#161618] p-10 rounded-[4rem] shadow-2xl flex flex-col items-center border border-white/10 relative overflow-hidden mb-8">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-[60px]"></div>
                 <div className="w-52 h-52 rounded-full border-[14px] border-black/40 flex flex-col justify-center items-center relative shadow-inner">
-                  <span className="text-6xl font-black italic text-white tracking-tighter">{finalCalories - consumedCalories}</span>
+                  <span className="text-6xl font-black italic text-white tracking-tighter">
+                    {finalCalories - consumedCalories < 0 ? 0 : finalCalories - consumedCalories}
+                  </span>
                   <span className="text-[10px] text-slate-500 font-black uppercase mt-1 tracking-widest opacity-60">Pozostało</span>
                 </div>
+              </div>
+
+{/* NOWOŚĆ: INTELIGENTNY DIETETYK AI */}
+              <div className="bg-white/5 border border-[#00E676]/30 p-5 rounded-[2rem] mb-10 shadow-lg relative overflow-hidden">
+                <div className="flex items-center justify-between mb-4 relative z-10">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl animate-pulse">🤖</span>
+                    <div>
+                      <h4 className="text-[10px] font-black uppercase text-[#00E676] tracking-widest">Dietetyk BIC</h4>
+                      <p className="text-xs text-slate-400 font-bold">Cel: {goal === 'lose' ? 'Redukcja 📉' : goal === 'gain' ? 'Masa 📈' : 'Utrzymanie ⚖️'}</p>
+                    </div>
+                  </div>
+                  
+                  {/* POPRAWKA: Przycisk zostaje i pozwala na losowanie nowego menu! */}
+                  {!isMenuLoading && (
+                    <button onClick={generateAiMenu} className="bg-[#00E676] text-black px-4 py-2 rounded-xl text-[9px] font-black uppercase active:scale-95 shadow-md shadow-[#00E676]/20 flex items-center gap-1">
+                      {aiMenu ? '🔄 Inne dania' : 'Ułóż jadłospis'}
+                    </button>
+                  )}
+                </div>
+                
+                {isMenuLoading && (
+                  <div className="text-center py-4 flex flex-col items-center gap-2 relative z-10">
+                    <div className="animate-spin h-6 w-6 border-2 border-[#00E676] border-t-transparent rounded-full"></div>
+                    <p className="text-[9px] text-[#00E676] font-bold uppercase tracking-widest">Generowanie planu...</p>
+                  </div>
+                )}
+
+                {aiMenu && !isMenuLoading && (
+                  <div className="text-left bg-black/40 p-4 rounded-2xl border border-white/5 text-[13px] text-slate-200 whitespace-pre-wrap leading-relaxed relative z-10 font-medium italic">
+                    {aiMenu}
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 gap-4">
@@ -192,53 +260,70 @@ function App() {
               </div>
             </div>
           ) : (
-            <div className="px-6 animate-in slide-in-from-right duration-300">
-              <h2 className="text-4xl font-black text-white tracking-tighter italic mb-8 uppercase">Profil</h2>
+            <div className="px-6 animate-in slide-in-from-right duration-300 pb-20">
+              <h2 className="text-4xl font-black text-white tracking-tighter italic mb-8 uppercase text-left">Profil</h2>
+
+              {/* RAPORT NIEDZIELNY - Gwarancja podsumowania tygodnia */}
+              {new Date().getDay() === 0 && new Date().getHours() >= 20 && history.length > 0 && (
+                <div className="bg-gradient-to-br from-emerald-400 to-teal-500 p-6 rounded-[2.5rem] mb-6 text-slate-900 shadow-xl animate-pulse">
+                  <p className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-70">Raport Tygodniowy 📊</p>
+                  <h3 className="text-2xl font-black italic uppercase leading-none">Wynik Tygodnia</h3>
+                  <p className="text-sm font-bold mt-2">
+                    Zjedzone: <span className="text-xl font-black">{history.reduce((acc, day) => acc + day.consumed, 0) + consumedCalories}</span> kcal
+                  </p>
+                </div>
+              )}
+
               <div className="bg-[#161618] p-8 rounded-[3.5rem] border border-white/10 shadow-2xl mb-8 relative">
                 <div className="flex items-center gap-6 mb-12 text-left">
                   <div className="w-20 h-20 bg-gradient-to-tr from-emerald-400 to-teal-200 rounded-[1.8rem] flex items-center justify-center text-3xl font-black text-black italic shadow-xl shadow-emerald-500/20">{name ? name[0].toUpperCase() : 'B'}</div>
                   <div><h3 className="text-3xl font-black text-white italic tracking-tight">{name || 'Użytkownik'}</h3><p className="text-emerald-400 font-bold text-[10px] uppercase tracking-[0.2em]">{bmiStatus} (BMI: {bmi})</p></div>
                 </div>
-                <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-8 text-left mb-8">
-                  <div className="bg-black/30 p-5 rounded-3xl border border-white/5"><p className="text-[8px] text-slate-600 font-black uppercase mb-1">Waga</p><p className="text-xl font-black text-white italic">{weight} kg</p></div>
-                  <div className="bg-black/30 p-5 rounded-3xl border border-white/5"><p className="text-[8px] text-slate-600 font-black uppercase mb-1">Wzrost</p><p className="text-xl font-black text-white italic">{height} cm</p></div>
+
+                {/* SEKCJA HISTORII OSTATNICH 7 DNI */}
+                <div className="mb-10">
+                  <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.3em] mb-4 italic">Ostatnie 7 dni</p>
+                  <div className="space-y-3">
+                    {history.length > 0 ? history.map((day, idx) => (
+                      <div key={idx} className="flex justify-between items-center bg-black/30 p-4 rounded-2xl border border-white/5">
+                        <span className="text-[9px] text-slate-500 font-black uppercase">{day.date}</span>
+                        <div className="flex items-center gap-3">
+                          <span className={`text-sm font-black italic ${day.consumed > day.target ? 'text-red-400' : 'text-emerald-400'}`}>
+                            {day.consumed}
+                          </span>
+                          <span className="text-[9px] text-slate-700 font-bold">/ {day.target} kcal</span>
+                        </div>
+                      </div>
+                    )) : (
+                      <p className="text-[10px] text-slate-700 italic text-center py-4">Historia pojawi się po pierwszej północy.</p>
+                    )}
+                  </div>
                 </div>
 
-                {/* SEKCJA AUTORA: Aleksander Chomicz */}
-                <div className="border-t border-white/5 pt-8 pb-4 text-center">
-                  <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.5em] mb-4 italic">O Aplikacji</p>
-                  <p className="text-slate-300 text-sm font-black italic">BIC - Be In Condition</p>
-                  <p className="text-[#00E676] text-[10px] font-bold uppercase tracking-widest mt-1">Autor: Aleksander Chomicz</p>
-
-                  {/*  GitHub  */}
-                  <a
-                    href="https://github.com/chomiczo"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all group"
-                  >
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
+                <div className="border-t border-white/5 pt-8 text-center">
+                  <p className="text-[10px] text-slate-600 font-black uppercase tracking-[0.5em] mb-4 italic text-center">O Aplikacji</p>
+                  <p className="text-slate-300 text-sm font-black italic text-center">BIC - Be In Condition</p>
+                  <p className="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mt-1 text-center">Autor: Aleksander Chomicz</p>
+                  <a href="https://github.com/chomiczo" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/5 text-slate-400 hover:text-white transition-all mx-auto">
                     <span className="text-[9px] font-black uppercase tracking-widest italic">Check my GitHub</span>
                   </a>
                 </div>
 
                 <div className="mt-8 space-y-3">
-                  <button onClick={() => setStep(1)} className="w-full p-5 bg-white/5 text-slate-500 font-black rounded-3xl uppercase text-[9px] tracking-[0.4em] border border-white/5 hover:text-white transition-all">Edytuj Profil</button>
-                  <button onClick={handleFullReset} className="w-full p-5 bg-red-500/10 text-red-400 font-black rounded-3xl uppercase text-[9px] tracking-[0.4em] border border-red-500/20 hover:bg-red-500 hover:text-white transition-all">Reset / Nowy Użytkownik</button>
+                  <button onClick={() => setStep(1)} className="w-full p-5 bg-white/5 text-slate-500 font-black rounded-3xl uppercase text-[9px] tracking-[0.4em] border border-white/5 active:bg-white/10">Edytuj Profil</button>
+                  <button onClick={handleFullReset} className="w-full p-5 bg-red-500/10 text-red-400 font-black rounded-3xl uppercase text-[9px] tracking-[0.4em] border border-red-500/20 active:bg-red-500 active:text-white">Reset / Nowy Użytkownik</button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* DOLNA NAWIGACJA (Standard Premium) */}
+          {/* DOLNA NAWIGACJA */}
           <div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-[#1a1a1a]/95 backdrop-blur-3xl border border-white/10 p-3 rounded-[2.5rem] flex items-center justify-between shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[80]">
             <button onClick={() => { setActiveTab('diary'); setIsScanning(false); }} className={`flex-1 py-4 flex flex-col items-center gap-1 transition-all ${activeTab === 'diary' && !isScanning ? 'text-emerald-400 scale-110' : 'text-slate-600'}`}>
               <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" /></svg>
               <span className="text-[8px] font-black uppercase tracking-widest">Dziennik</span>
             </button>
-            <button onClick={() => setIsScanning(true)} className="bg-gradient-to-br from-emerald-400 to-teal-400 w-16 h-16 rounded-[1.8rem] flex items-center justify-center text-slate-950 shadow-[0_10px_30px_rgba(52,211,153,0.3)] active:scale-90 transition-transform -mt-14 border-[8px] border-[#0a0a0c]">
+            <button onClick={() => setIsScanning(true)} className="bg-gradient-to-br from-emerald-400 to-teal-400 w-16 h-16 rounded-[1.8rem] flex items-center justify-center text-slate-950 shadow-xl active:scale-90 transition-transform -mt-14 border-[8px] border-[#0a0a0c]">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M12 4v16m8-8H4" /></svg>
             </button>
             <button onClick={() => { setActiveTab('profile'); setIsScanning(false); }} className={`flex-1 py-4 flex flex-col items-center gap-1 transition-all ${activeTab === 'profile' && !isScanning ? 'text-emerald-400 scale-110' : 'text-slate-600'}`}>
