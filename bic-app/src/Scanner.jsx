@@ -161,8 +161,160 @@ export default function Scanner({ onClose, onScan }) {
 
     'pretzel', 'pretzels', 'popcorn', 'salted popcorn',
     'krakers', 'krakersy', 'paluszki', 'precel', 'popcorn',
-    'prażynki', 'chrupki kukurydziane'
+    'prażynki', 'chrupki kukurydziane',
 
+    // NAPOJE (BEVERAGES)
+    'drink', 'beverage', 'water', 'coffee', 'tea', 'juice', 'soda', 'cola', 'pepsi',
+    'sprite', 'energy drink', 'beer', 'wine', 'alcohol', 'vodka', 'smoothie', 'shake',
+    'napój', 'woda', 'kawa', 'herbata', 'sok', 'kompot', 'oranżada', 'napój gazowany',
+    'piwo', 'wino', 'alkohol', 'wódka', 'drinek',
+
+    // SOSY, TŁUSZCZE I DODATKI (CONDIMENTS)
+    'sauce', 'ketchup', 'mayo', 'mayonnaise', 'mustard', 'dressing', 'oil', 'olive oil',
+    'vinegar', 'syrup', 'peanut butter', 'jam',
+    'sos', 'majonez', 'musztarda', 'olej', 'oliwa', 'margaryna', 'smalec', 'dressing',
+    'syrop', 'masło orzechowe',
+
+    // TYPOWO POLSKIE DANIA
+    'schabowy', 'bigos', 'żurek', 'barszcz', 'gołąbki', 'krokiet', 'zapiekanka', 'oscypek',
+    'fasolka po bretońsku', 'flaki', 'leczo',
+
+    // INNE BRAKUJĄCE (FITNESS)
+    'protein', 'whey', 'creatine', 'białko', 'odżywka białkowa', 'skyr', 'kreatyna', 'izolat',
+
+    // PRZYPRAWY I DODATKI DO PIECZENIA
+    'sugar', 'salt', 'pepper', 'cinnamon', 'cocoa', 'yeast', 'baking powder',
+    'cukier', 'sól', 'pieprz', 'cynamon', 'kakao', 'drożdże', 'proszek do pieczenia',
+
+    // DIETA WEGE I DANIA ŚWIATA
+    'tofu', 'seitan', 'hummus', 'falafel', 'sushi', 'soya', 'vegan', 'veggie',
+    'wege', 'wegańskie', 'wegetariańskie', 'sajgonki', 'pad thai', 'tortilla',
+
+    // CODZIENNE POLSKIE ŚNIADANIA I KOLACJE
+    'jajecznica', 'owsianka', 'parówka', 'parówki', 'twarożek', 'kanapka', 'kanapki',
+    'tosty', 'sałatka', 'surówka', 'omlet', 'kaszka', 'musli', 'płatki z mlekiem',
+
+    // POPULARNE MARKI (FAST FOOD I NAPOJE)
+    'mcdonalds', 'mcdonald', 'kfc', 'burger king', 'subway', 'starbucks', 'costa',
+    'monster', 'red bull', 'izotonik', 'powerade', 'oshee',
+
+    // TERMINY DIETETYCZNE (często wpisywane ręcznie)
+    'keto', 'low carb', 'gluten free', 'bezglutenowe', 'bez laktozy', 'fit', 'light', 'zero',
+    // POLSKIE ZUPY I TRADYCYJNE DANIA
+    'pomidorowa', 'ogórkowa', 'krupnik', 'pieczarkowa', 'grochówka', 'kapuśniak',
+    'mielony', 'placki ziemniaczane', 'pyzy', 'knedle', 'kopytka', 'kaszanka', 'pasztet',
+
+    // POLSKIE WYPIEKI I SŁODYCZE (często wpisywane z palca)
+    'sernik', 'szarlotka', 'makowiec', 'pączek', 'faworki', 'ptysie', 'eklery',
+    'chałwa', 'sezamki', 'delicje', 'jeżyki', 'katarzynki', 'rurki z kremem',
+
+    // MODNE NAPOJE I NABIAŁ
+    'matcha', 'yerba', 'kombucha', 'kwas chlebowy', 'maślanka', 'zsiadłe mleko',
+    'mleko owsiane', 'mleko migdałowe', 'mleko sojowe',
+
+    // DODATKI DO GOTOWANIA
+    'mąka pszenna', 'mąka żytnia', 'żelatyna', 'agar', 'kapary', 'suszone pomidory', 'pesto',
+    // KAWY I NAPOJE KAFEJNIANE
+    'espresso', 'cappuccino', 'latte', 'macchiato', 'americano', 'flat white', 'mocha',
+    'frappe', 'boba', 'bubble tea', 'gorąca czekolada', 'kakao',
+
+    // ALKOHOLE SZCZEGÓŁOWE
+    'cydr', 'prosecco', 'szampan', 'rum', 'gin', 'tequila', 'whisky', 'burbon',
+    'nalewka', 'grzaniec', 'drinki', 'mojito', 'aperol', 'margarita',
+
+    // KUCHNIA WŁOSKA (DOKŁADNA)
+    'ravioli', 'tiramisu', 'panna cotta', 'bruschetta', 'focaccia', 'calzone',
+    'tortellini', 'cannoli', 'risotto', 'caprese', 'carpaccio',
+
+    // KUCHNIA AZJATYCKA (DOKŁADNA)
+    'udon', 'pho', 'spring rolls', 'dim sum', 'teriyaki', 'wasabi', 'kimchi',
+    'bao', 'edamame', 'sriracha', 'sos sojowy', 'tempura', 'tikka masala', 'naan',
+
+    // KUCHNIA MEKSYKAŃSKA I INNE
+    'quesadilla', 'fajitas', 'salsa', 'churros', 'jalapeno', 'guacamole',
+    'kebab', 'pita', 'baklava', 'tzatziki', 'gyros', 'shoarma',
+
+    // POLSKIE DANIA SPECJALNE / ŚWIĄTECZNE / REGIONALNE
+    'uszka', 'kutia', 'karp', 'śledzie', 'zrazy', 'kluski śląskie', 'rolada',
+    'rogale świętomarcińskie', 'chłodnik', 'botwinka', 'kompot z suszu', 'moskole',
+
+    // DODATKI FAST FOOD I SNACKI
+    'nuggets', 'onion rings', 'krążki cebulowe', 'skrzydełka', 'stripsy',
+    'sos czosnkowy', 'sos słodko-kwaśny', 'chrupki', 'kabanosy', 'paluszki serowe',
+
+    // KASZE, ZIARNA I SUPERFOODS
+    'komosa ryżowa', 'kasza gryczana', 'kasza jaglana', 'kasza pęczak', 'kasza kuskus',
+    'bulgur', 'amarantus', 'tapioka', 'spirulina', 'nasiona konopi', 'jagody goji',
+
+    // INNE BRAKUJĄCE ELEMENTY
+    'lody gałkowe', 'lody włoskie', 'sorbet', 'smalec', 'skwarki', 'boczek',
+    'kiełki', 'rukola', 'roszponka', 'jarmuż', 'szparagi', 'brukselka',
+
+    // SUPLEMENTY I ŻARGON FITNESS (Kulturystyka)
+    'bcaa', 'eaa', 'pre-workout', 'przedtreningówka', 'gainer', 'carbo', 'kolagen',
+    'spalacz tłuszczu', 'fat burner', 'elektrolity', 'zma', 'ashwagandha', 'baton proteinowy',
+    'szejk białkowy', 'izolat białka', 'wpc', 'wpi', 'kazeina', 'cytrulina', 'beta alanina',
+
+    // EKSTREMALNIE POLSKIE / REGIONALNE / STAROPOLSKIE
+    'tatar', 'tatarek', 'galareta', 'zimne nóżki', 'śledź w oleju', 'śledź w śmietanie',
+    'ryba po grecku', 'kaczka z jabłkami', 'cebularz', 'pyra z gzikiem', 'proziaki',
+    'sękacz', 'makiełki', 'farsz', 'zacierki', 'kluseczki', 'łazanki', 'knysza', 'maczanka',
+
+    // DANIA Z CAŁEGO ŚWIATA (Modne i Specyficzne)
+    'poke bowl', 'shakshuka', 'szakszuka', 'halloumi', 'paneer', 'churrasco', 'tapas',
+    'paella', 'ceviche', 'empanadas', 'arepas', 'kimchi jjigae', 'bibimbap', 'onigiri',
+    'takoyaki', 'okonomiyaki', 'currywurst', 'poutine', 'fish and chips', 'haggis',
+
+    // SŁODYCZE, PRZEKĄSKI, GADŻETY KULINARNE (Drobiazgi)
+    'żelki', 'pianki', 'lizak', 'landrynki', 'krówki', 'kukułki', 'raczki', 'michałki',
+    'm&m', 'skittles', 'haribo', 'pringles', 'nachosy', 'krakersy', 'słuszki', 'chrupki',
+    'popcorn', 'wata cukrowa', 'gofry', 'churros', 'langosz', 'trdelnik', 'kołacz',
+
+    // SKŁADNIKI BAZOWE I DODATKI (Rozszerzenie)
+    'smalec gęsi', 'masło klarowane', 'ghee', 'olej kokosowy', 'olej lniany', 'olej z awokado',
+    'syrop klonowy', 'syrop z agawy', 'stewia', 'erytrytol', 'ksylitol', 'sacharyna',
+    'bułka tarta', 'płatki migdałowe', 'wiórki kokosowe', 'sezam czarny', 'czarnuszka',
+
+    // EGZOTYCZNE OWOCE I WARZYWA
+    'marakuja', 'passionfruit', 'kaki', 'persimmon', 'pitaja', 'dragonfruit', 'smoczy owoc',
+    'liczi', 'lychee', 'mangostan', 'durian', 'karambola', 'starfruit', 'kumkwat', 'pomelo',
+    'yuzu', 'plantan', 'maniok', 'tapioka', 'batat', 'yuca', 'taro', 'kalarepa', 'brukiew',
+    'pasternak', 'okra', 'tomatillo', 'jalapeno', 'habanero',
+
+    // EKSTREMALNE POLSKIE REGIONALIZMY I SWOJSKIE JADŁO
+    'oscypek', 'bundz', 'bryndza', 'korbacz', 'salceson', 'krupniok', 'żymlok', 'kartacz',
+    'babka ziemniaczana', 'kiszka ziemniaczana', 'cebularz', 'obwarzanek', 'podpiwek',
+    'kwaśnica', 'zalewajka', 'czernina', 'zupa nic', 'pampuchy', 'kluski na parze', 'knedle',
+    'szagówki', 'szpecle', 'śliwowica', 'bimber', 'nalewka', 'miód pitny',
+
+    // SPECJAŁY Z CAŁEGO ŚWIATA (Dokładne)
+    'baba ganoush', 'tahini', 'doner', 'souvlaki', 'moussaka', 'paratha', 'dosa', 'idli',
+    'samosa', 'vindaloo', 'korma', 'banh mi', 'tom yum', 'soba', 'sashimi', 'nigiri', 'maki',
+    'bulgogi', 'enchilada', 'pico de gallo', 'flan', 'gazpacho', 'muffin', 'scone', 'bagel',
+
+    // SERY I NABIAŁ (Szczegółowe)
+    'camembert', 'brie', 'gorgonzola', 'roquefort', 'gouda', 'edam', 'emmentaler', 'gruyere',
+    'pecorino', 'provolone', 'mascarpone', 'burrata', 'halloumi', 'paneer', 'twaróg', 'kefir',
+    'ajran', 'ayran', 'skyr', 'kvarg', 'jogurt grecki',
+
+    // MIĘSA I WĘDLINY (Szczegółowe)
+    'polędwica', 'schab', 'karkówka', 'żeberka', 'boczek', 'słonina', 'golonka', 'ozorki',
+    'wątróbka', 'żołądki', 'serca', 'kaszanka', 'pasztetowa', 'metka', 'salami', 'chorizo',
+    'prosciutto', 'pancetta', 'bresaola', 'pastrami', 'mortadela', 'parówki', 'kabanos',
+
+    // RYBY I OWOCE MORZA (Szczegółowe)
+    'karp', 'śledź', 'szprotki', 'makrela', 'halibut', 'sola', 'flądra', 'sandacz', 'szczupak',
+    'okoń', 'węgorz', 'mintaj', 'morszczuk', 'dorada', 'okoń morski', 'małże', 'ośmiornica',
+    'kalmary', 'krewetki', 'homar', 'langusta', 'ostrygi', 'przegrzebki', 'kawior',
+
+    // PIECZYWO I ZBOŻA (Szczegółowe)
+    'chleb na zakwasie', 'chleb żytni', 'pumpernikiel', 'chałka', 'drożdżówka', 'kajzerka',
+    'grahamka', 'płatki owsiane', 'płatki jaglane', 'otręby', 'musli', 'granola', 'chrupki',
+
+    // CHEMIKULIA, SOSY I SŁODZIKI
+    'msg', 'glutaminian', 'aspartam', 'acesulfam', 'sukraloza', 'sacharyna', 'maltitol',
+    'sorbitol', 'agar', 'pektyna', 'guma guar', 'guma ksantanowa', 'sos sriracha', 'hoisin',
+    'teriyaki', 'sos rybny', 'sos ostrygowy', 'maggi', 'przyprawa w płynie'
 
   ];
 
@@ -173,8 +325,160 @@ export default function Scanner({ onClose, onScan }) {
       'piggy bank': 'Merci 🍬', 'shower cap': 'Merci 🍬', 'packet': 'Przekąska w paczce 🍬',
       'plastic bag': 'Przekąska w paczce 🍬', 'wrapper': 'Baton/Cukierek 🍫', 'bag': 'Przekąska 🍿',
       'meatloaf': 'Kanapka z wędliną 🥪', 'potpie': 'Pieczywo z dodatkiem 🥯', 'bagel': 'Pieczywo 🥯',
-      'beigel': 'Pieczywo 🥯'
+      'beigel': 'Pieczywo 🥯',
+      'cup': 'Kawa lub Herbata ☕',
+      'coffee mug': 'Kawa ☕',
+      'espresso': 'Kawa ☕',
+      'water bottle': 'Woda 💧',
+      'wine bottle': 'Wino 🍷',
+      'pop bottle': 'Napój gazowany 🥤',
+      'granny smith': 'Jabłko 🍏',
+      'orange': 'Pomarańcza 🍊',
+      'lemon': 'Cytryna 🍋',
+      'fig': 'Figa 🍈',
+      'pineapple': 'Ananas 🍍',
+      'ice lolly': 'Lody na patyku 🍦',
+      'french loaf': 'Bagietka 🥖',
+      'plate': 'Danie na talerzu 🍽️',
+      'bowl': 'Danie w misce 🥣',
+      'measuring cup': 'Szejk / Koktajl 🥤',
+      'hotdog': 'Hot-Dog 🌭',
+      'burrito': 'Burrito / Wrap 🌯',
+      // SPECYFICZNE KLASY MOBILENET (AI WIZYJNE):
+      'ice cream': 'Lody 🍨',
+      'mashed potato': 'Ziemniaki Purée 🥔',
+      'bell pepper': 'Papryka 🫑',
+      'head cabbage': 'Kapusta 🥬',
+      'guacamole': 'Guacamole 🥑',
+      'consomme': 'Zupa / Bulion 🥣',
+      'trifle': 'Deser 🍮',
+      'pudding': 'Budyń / Deser 🍮',
+      'grocery store': 'Półka z jedzeniem 🛒', // Czasem AI widzi po prostu cały regał w sklepie!
+      'shopping basket': 'Koszyk z zakupami 🛒',
+      // NACZYNIA KUCHENNE (MobileNet często widzi je zamiast jedzenia):
+      'frying pan': 'Danie z patelni 🍳',
+      'wok': 'Danie z woka 🥘',
+      'tray': 'Taca z jedzeniem 🍱',
+      'baking dish': 'Zapiekanka / Ciasto 🥧',
+      'teapot': 'Herbata 🫖',
+      'coffeepot': 'Kawa ☕',
+      'water jug': 'Dzbanek wody / Sok 💧',
+      'pitcher': 'Dzbanek z napojem 🥤',
+
+      // DZIWNE, ALE CZĘSTE KLASY W MOBILENET:
+      'cauliflower': 'Kalafior 🥦',
+      'artichoke': 'Karczoch / Warzywo 🥬',
+      'spaghetti squash': 'Makaron / Spaghetti 🍝',
+      'dough': 'Ciasto (Surowe) / Wypiek 🥐',
+      'eggnog': 'Koktajl / Napój mleczny 🥛',
+      'chocolate sauce': 'Sos czekoladowy / Deser 🍫',
+      // ABSURDALNE KLASY MOBILENET (AI często myli te przedmioty z jedzeniem wokół nich):
+      'refrigerator': 'Jedzenie z lodówki 🧊',
+      'carton': 'Karton z napojem / Mleko 🧃',
+      'menu': 'Danie z karty 📜',
+      'goblet': 'Kieliszek / Napój 🍷',
+      'cocktail shaker': 'Szejk / Koktajl 🍹',
+      'paper towel': 'Przekąska / Jedzenie z ręki 🥪', // AI widzi ręcznik papierowy pod kanapką
+
+      // RZADKIE OWOCE I WARZYWA Z BAZY IMAGENET (wbudowane w Twoje AI):
+      'jackfruit': 'Owoc (Chlebowiec) 🍈',
+      'custard apple': 'Owoc (Cherimoja) 🍈',
+      'butternut squash': 'Dynia 🎃',
+      'acorn squash': 'Dynia 🎃',
+      'cardoon': 'Karczoch / Warzywo 🥬',
+      'mushroom': 'Grzyb / Pieczarka 🍄',
+
+      // POZOSTAŁE DANIA Z BAZY AI:
+      'hot pot': 'Gorący kociołek / Zupa 🍲',
+      'pretzel': 'Precel / Przekąska 🥨',
+      'meat loaf': 'Pieczeń mięsna 🥩',
+
+      // URZĄDZENIA KUCHENNE (Jeśli zrobisz zdjęcie w kuchni, AI może to złapać):
+      'toaster': 'Tost / Grzanka 🍞',
+      'microwave': 'Danie z mikrofali 🍱',
+      'espresso maker': 'Kawa z ekspresu ☕',
+      'saltshaker': 'Sól / Przyprawy 🧂',
+      'mixing bowl': 'Składniki w misce 🥣',
+      'ladle': 'Zupa (z chochli) 🥣',
+      'wooden spoon': 'Potrawa z łyżki 🥄',
+      'cleaver': 'Mięso (przygotowanie) 🥩',
+      'corkscrew': 'Wino 🍷',
+      'bottle opener': 'Napój z butelki / Piwo 🍺',
+
+      // MIEJSCA I OTOCZENIE (AI czasem widzi całe tło zamiast posiłku):
+      'dining table': 'Posiłek na stole 🍽️',
+      'bakery': 'Wypieki / Chleb 🥖',
+      'meat market': 'Mięso / Wędliny 🥩',
+
+      // BRAKUJĄCE OWOCE / KLASY IMAGENET:
+      'pomegranate': 'Granat 🍎',
+      'ear': 'Kukurydza 🌽',
+      'hip': 'Dzika róża / Owoce 🍒',
+      'acorn': 'Orzechy / Żołędzie 🌰',
+      'red wine': 'Czerwone wino 🍷',
+      'tea cup': 'Filiżanka herbaty 🫖',
+      'beer glass': 'Kufel piwa 🍺',
+
+      // RESZTKI BAZY IMAGENET: SPRZĘT I NARZĘDZIA KUCHENNE:
+      'strainer': 'Makaron / Odcedzone jedzenie 🍝',
+      'colander': 'Warzywa w durszlaku 🥦',
+      'crock pot': 'Gulasz / Wolnowar 🍲',
+      'spatula': 'Potrawa z patelni 🍳',
+      'can opener': 'Konserwa / Puszka jedzenia 🥫',
+      'beaker': 'Płyn / Napój 🥤',
+      'vase': 'Woda / Napój 💧', // Czasem AI myli dzbanek z wazonem
+
+      // RESZTKI BAZY IMAGENET: SUROWE SKŁADNIKI I ZWIERZĘTA (Jako jedzenie):
+      'dungeness crab': 'Krab / Owoce morza 🦀',
+      'american lobster': 'Homar 🦞',
+      'king crab': 'Krab Królewski 🦀',
+      'crayfish': 'Rak / Owoce morza 🦞',
+      'hen': 'Drób / Kurczak 🍗',
+      'cock': 'Drób / Kurczak 🍗',
+      'pig': 'Wieprzowina 🥩',
+      'ox': 'Wołowina 🥩',
+
+      // DODATKOWE BŁĘDY AI DLA OPAKOWAŃ:
+      'envelope': 'Herbata w torebce 🫖', // AI myli płaską torebkę herbaty z kopertą
+
+      // HALUCYNACJE KUCHENNE IMAGENET:
+      'whisk': 'Masa / Ciasto 🥣',
+      'can, tin, tin can': 'Konserwa / Puszka jedzenia 🥫',
+      'pill bottle': 'Witaminy / Suplementy 💊',
+      'hair spray': 'Bita śmietana / Spray do smażenia 🧴', // AI myli puszki ze sprayem!
+      'barrel, cask': 'Beczka wina / Piwa 🍺',
+      'bucket, pail': 'Kubełek jedzenia (KFC itp.) 🍗',
+
+      // HALUCYNACJE ZWIERZĘCE IMAGENET (AI widzi zwierzę zamiast dania z niego):
+      'ostrich': 'Drób / Mięso 🥩',
+      'partridge': 'Dzikie ptactwo / Mięso 🍗',
+      'quail': 'Przepiórka / Jajka 🥚',
+      'hare': 'Dziczyzna / Mięso 🥩',
+      'ram, tup': 'Baranina 🥩',
+      'bighorn, bighorn sheep': 'Baranina 🥩',
+      'slug': 'Ślimak / Przekąska 🐌',
+      'conch': 'Owoce morza 🐚',
+      'sea cucumber': 'Owoce morza 🥒',
+      'jellyfish': 'Żelki / Przekąska 🍬', // AI myli meduzy z żelkami
+      'starfish': 'Ciasteczko / Wypiek ⭐', // AI myli rozgwiazdy z ciastkami w kształcie gwiazdek
+
+      // HALUCYNACJE GRZYBOWE I ROŚLINNE:
+      'agaric': 'Grzyb jadalny 🍄',
+      'gyromitra': 'Grzyb / Potrawa 🍄',
+      'stinkhorn': 'Grzyb / Potrawa 🍄',
+      'earthstar': 'Grzyb / Potrawa 🍄',
+      'hen-of-the-woods': 'Grzyb Maitake 🍄',
+      'bolete': 'Borowik / Grzyb 🍄',
+      'daisy': 'Jadalne kwiaty / Dekoracja 🌼',
+
+      // HALUCYNACJE WIDOKÓW (AI widzi sklep lub sprzęt):
+      'grocery store, grocery, food market, market': 'Zakupy spożywcze 🛒',
+      'shopping cart': 'Koszyk z zakupami 🛒',
+      'bakery, bakeshop, bakehouse': 'Wypieki / Pieczywo 🥖',
+      'dishwasher, dish washer, dishwashing machine': 'Brudne naczynia / Posiłek 🍽️',
+      'apron': 'Gotowanie / Kucharz 👨‍🍳'
     };
+
     const lower = eng.toLowerCase();
     for (let key in dict) if (lower.includes(key)) return dict[key];
     return `Coś do jedzenia (${eng})`;
@@ -223,20 +527,31 @@ export default function Scanner({ onClose, onScan }) {
       const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json`);
       const data = await res.json();
       if (data.status === 1) {
+
+        // Produkt z bazy, ale bez kalorii (np. puste dane / błąd) ---
+        if (!data.product.nutriments || Object.keys(data.product.nutriments).length === 0) {
+          setErrorMessage("Znaleziono produkt, ale nie ma on wartości odżywczych w bazie! Czy to na pewno jedzenie?");
+          setStatus('error');
+          isProcessingRef.current = false;
+          if (scannerRef.current) scannerRef.current.resume();
+          return;
+        }
+
         const kcal = data.product.nutriments['energy-kcal_100g'] || 0;
         setFoundProduct({ name: data.product.product_name || "Nieznany produkt", kcalPer100g: kcal });
         setStatus('result');
       } else {
-        // PŁYNNE PRZEJŚCIE: Brak w bazie = Wpisz ręcznie (Zero alertów!)
-        setManualName(`Kod: ${code} (Opisz posiłek słownie)`);
-        setTab('manual');
-        setStatus('idle');
+        // Kodu nie ma w ogóle w bazie żywności ---
+        // (Wcześniej cicho przenosiło do wpisywania ręcznego)
+        setErrorMessage(`Kod ${code} nie istnieje w bazie żywności. Czy to na pewno jedzenie?`);
+        setStatus('error');
         isProcessingRef.current = false;
         if (scannerRef.current) scannerRef.current.resume();
       }
     } catch (e) {
       isProcessingRef.current = false;
-      setStatus('idle');
+      setStatus('error');
+      setErrorMessage("Błąd skanowania kodu. Spróbuj ponownie.");
     }
   };
 
@@ -294,11 +609,23 @@ export default function Scanner({ onClose, onScan }) {
       const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-      const prompt = `Jako profesjonalny dietetyk, oszacuj całkowitą kaloryczność tego posiłku: "${manualName}". Zwróć TYLKO I WYŁĄCZNIE samą liczbę całkowitą (np. 450). Nie dodawaj tekstu "kcal", słów, znaków zapytania ani wyjaśnień. Jeśli nie masz pewności, podaj średnią wartość dla takiej porcji.`;
+      // 1. USZTYWNIONY PROMPT (Ochrona przed bzdurami)
+      const prompt = `Jako profesjonalny dietetyk, oszacuj całkowitą kaloryczność tego posiłku: "${manualName}". 
+      ZASADA 1: Jeśli podany tekst NIE JEST jedzeniem, piciem ani potrawą nadającą się do spożycia przez człowieka (np. to mebel, słowo testowe, samochód, przypadkowe litery), zwróć TYLKO słowo: BŁĄD, TO NIE JEST COŚ CO MÓGŁBY SPOŻYĆ CZŁOWIEK. 
+      ZASADA 2: Jeśli to jedzenie, zwróć TYLKO I WYŁĄCZNIE samą liczbę całkowitą (np. 450). Nie dodawaj słowa "kcal", znaków zapytania ani żadnych wyjaśnień.`;
 
       const result = await model.generateContent(prompt);
-      const responseText = result.response.text();
-      const estimatedKcal = parseInt(responseText.replace(/\D/g, '')); // Wyciąga same cyfry
+      const responseText = result.response.text().trim();
+
+      // 2. NOWA LOGIKA: Sprawdzamy, czy AI wykryło "nie-jedzenie"
+      if (responseText.toUpperCase().includes("BŁĄD") || responseText.toUpperCase().includes("BLAD")) {
+        setErrorMessage("To nie wygląda jak jedzenie ani napój! Wpisz poprawny posiłek.");
+        setStatus('error');
+        return; // Zatrzymujemy działanie, żeby nie dodawało zera do bilansu
+      }
+
+      // 3. Stara logika (jeśli to faktycznie jedzenie)
+      const estimatedKcal = parseInt(responseText.replace(/\D/g, ''));
 
       if (!isNaN(estimatedKcal)) {
         setFoundProduct({ name: manualName, kcalPer100g: estimatedKcal, fullWeight: 0 });
@@ -310,7 +637,12 @@ export default function Scanner({ onClose, onScan }) {
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage("Błąd połączenia z AI. Upewnij się, że dodałeś poprawny klucz w pliku .env");
+      // ZMIANA: Pokazujemy prawdziwy powód zablokowania przez Google
+      if (error.message && error.message.includes("429")) {
+        setErrorMessage("Zbyt wiele pytań do AI pod rząd. Odczekaj 30 sekund.");
+      } else {
+        setErrorMessage(`Problem z połączeniem: ${error.message}`);
+      }
       setStatus('error');
     }
   };
@@ -350,7 +682,7 @@ export default function Scanner({ onClose, onScan }) {
         )}
 
         {/* NOWOŚĆ: INTELIGENTNY FORMULARZ RĘCZNY Z LLM */}
-        {tab === 'manual' && (
+        {tab === 'manual' && status === 'idle' && (
           <div className="w-full bg-[#1c1c24] p-8 rounded-[3.5rem] border border-white/10 shadow-2xl animate-in zoom-in flex flex-col gap-6">
             <h2 className="text-xl font-black italic uppercase text-center mb-2">Opisz co zjadłeś</h2>
             <p className="text-[10px] text-gray-500 text-center uppercase tracking-widest -mt-4 mb-2">AI wyliczy za Ciebie kalorie</p>
