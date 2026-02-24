@@ -54,8 +54,6 @@ Ponieważ projekt został zbudowany jako Progressive Web App, nie musisz pobiera
 
 ## 🛠️ Architektura Projektu (SOLID)
 
-Kod przeszedł gruntowną refaktoryzację w celu oddzielenia warstwy widoku od logiki biznesowej i komunikacji sieciowej:
-
 * `App.jsx` - Główny kontroler aplikacji, zarządzanie stanem i cyklem życia.
 * `SetupView.jsx` - UI konfiguracji profilu i kalkulator zapotrzebowania (BMR/TDEE).
 * `DiaryView.jsx` - Komponent odpowiedzialny za renderowanie dziennika, kółka kalorii i modułu makro.
