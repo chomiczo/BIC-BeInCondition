@@ -139,7 +139,8 @@
   background-color: #00E676;
   color: #121212;
   border: none;
-  border-radius: 50px; /* Zaokrąglony przycisk w stylu pływającym */
+  border-radius: 50px;
+  /* Zaokrąglony przycisk w stylu pływającym */
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;

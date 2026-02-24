@@ -1,5 +1,5 @@
-  // Słownik idiotoodporny (Twoja lista)
-  const foodKeywords = [
+// Słownik
+const foodKeywords = [
 
     // OGÓLNE
     'food', 'meal', 'dish', 'snack', 'dessert', 'breakfast', 'lunch', 'dinner', 'supper',
@@ -295,173 +295,173 @@
     'sorbitol', 'agar', 'pektyna', 'guma guar', 'guma ksantanowa', 'sos sriracha', 'hoisin',
     'teriyaki', 'sos rybny', 'sos ostrygowy', 'maggi', 'przyprawa w płynie'
 
-  ];
+];
 
-  const translate = (eng) => {
+const translate = (eng) => {
     const dict = {
-      'banana': 'Banan 🍌', 'strawberry': 'Truskawka 🍓', 'pizza': 'Pizza 🍕',
-      'hamburger': 'Burger 🍔', 'jelly fish': 'Merci 🍬', 'diaper, nappy, napkin': 'Merci 🍬',
-      'piggy bank': 'Merci 🍬', 'shower cap': 'Merci 🍬', 'packet': 'Przekąska w paczce 🍬',
-      'plastic bag': 'Przekąska w paczce 🍬', 'wrapper': 'Baton/Cukierek 🍫', 'bag': 'Przekąska 🍿',
-      'meatloaf': 'Kanapka z wędliną 🥪', 'potpie': 'Pieczywo z dodatkiem 🥯', 'bagel': 'Pieczywo 🥯',
-      'beigel': 'Pieczywo 🥯',
-      'cup': 'Kawa lub Herbata ☕',
-      'coffee mug': 'Kawa ☕',
-      'espresso': 'Kawa ☕',
-      'water bottle': 'Woda 💧',
-      'wine bottle': 'Wino 🍷',
-      'pop bottle': 'Napój gazowany 🥤',
-      'granny smith': 'Jabłko 🍏',
-      'orange': 'Pomarańcza 🍊',
-      'lemon': 'Cytryna 🍋',
-      'fig': 'Figa 🍈',
-      'pineapple': 'Ananas 🍍',
-      'ice lolly': 'Lody na patyku 🍦',
-      'french loaf': 'Bagietka 🥖',
-      'plate': 'Danie na talerzu 🍽️',
-      'bowl': 'Danie w misce 🥣',
-      'measuring cup': 'Szejk / Koktajl 🥤',
-      'hotdog': 'Hot-Dog 🌭',
-      'burrito': 'Burrito / Wrap 🌯',
-      // SPECYFICZNE KLASY MOBILENET (AI WIZYJNE):
-      'ice cream': 'Lody 🍨',
-      'mashed potato': 'Ziemniaki Purée 🥔',
-      'bell pepper': 'Papryka 🫑',
-      'head cabbage': 'Kapusta 🥬',
-      'guacamole': 'Guacamole 🥑',
-      'consomme': 'Zupa / Bulion 🥣',
-      'trifle': 'Deser 🍮',
-      'pudding': 'Budyń / Deser 🍮',
-      'grocery store': 'Półka z jedzeniem 🛒', // Czasem AI widzi po prostu cały regał w sklepie!
-      'shopping basket': 'Koszyk z zakupami 🛒',
-      // NACZYNIA KUCHENNE (MobileNet często widzi je zamiast jedzenia):
-      'frying pan': 'Danie z patelni 🍳',
-      'wok': 'Danie z woka 🥘',
-      'tray': 'Taca z jedzeniem 🍱',
-      'baking dish': 'Zapiekanka / Ciasto 🥧',
-      'teapot': 'Herbata 🫖',
-      'coffeepot': 'Kawa ☕',
-      'water jug': 'Dzbanek wody / Sok 💧',
-      'pitcher': 'Dzbanek z napojem 🥤',
+        'banana': 'Banan 🍌', 'strawberry': 'Truskawka 🍓', 'pizza': 'Pizza 🍕',
+        'hamburger': 'Burger 🍔', 'jelly fish': 'Merci 🍬', 'diaper, nappy, napkin': 'Merci 🍬',
+        'piggy bank': 'Merci 🍬', 'shower cap': 'Merci 🍬', 'packet': 'Przekąska w paczce 🍬',
+        'plastic bag': 'Przekąska w paczce 🍬', 'wrapper': 'Baton/Cukierek 🍫', 'bag': 'Przekąska 🍿',
+        'meatloaf': 'Kanapka z wędliną 🥪', 'potpie': 'Pieczywo z dodatkiem 🥯', 'bagel': 'Pieczywo 🥯',
+        'beigel': 'Pieczywo 🥯',
+        'cup': 'Kawa lub Herbata ☕',
+        'coffee mug': 'Kawa ☕',
+        'espresso': 'Kawa ☕',
+        'water bottle': 'Woda 💧',
+        'wine bottle': 'Wino 🍷',
+        'pop bottle': 'Napój gazowany 🥤',
+        'granny smith': 'Jabłko 🍏',
+        'orange': 'Pomarańcza 🍊',
+        'lemon': 'Cytryna 🍋',
+        'fig': 'Figa 🍈',
+        'pineapple': 'Ananas 🍍',
+        'ice lolly': 'Lody na patyku 🍦',
+        'french loaf': 'Bagietka 🥖',
+        'plate': 'Danie na talerzu 🍽️',
+        'bowl': 'Danie w misce 🥣',
+        'measuring cup': 'Szejk / Koktajl 🥤',
+        'hotdog': 'Hot-Dog 🌭',
+        'burrito': 'Burrito / Wrap 🌯',
+        // SPECYFICZNE KLASY MOBILENET (AI WIZYJNE):
+        'ice cream': 'Lody 🍨',
+        'mashed potato': 'Ziemniaki Purée 🥔',
+        'bell pepper': 'Papryka 🫑',
+        'head cabbage': 'Kapusta 🥬',
+        'guacamole': 'Guacamole 🥑',
+        'consomme': 'Zupa / Bulion 🥣',
+        'trifle': 'Deser 🍮',
+        'pudding': 'Budyń / Deser 🍮',
+        'grocery store': 'Półka z jedzeniem 🛒', // Czasem AI widzi po prostu cały regał w sklepie!
+        'shopping basket': 'Koszyk z zakupami 🛒',
+        // NACZYNIA KUCHENNE (MobileNet często widzi je zamiast jedzenia):
+        'frying pan': 'Danie z patelni 🍳',
+        'wok': 'Danie z woka 🥘',
+        'tray': 'Taca z jedzeniem 🍱',
+        'baking dish': 'Zapiekanka / Ciasto 🥧',
+        'teapot': 'Herbata 🫖',
+        'coffeepot': 'Kawa ☕',
+        'water jug': 'Dzbanek wody / Sok 💧',
+        'pitcher': 'Dzbanek z napojem 🥤',
 
-      // DZIWNE, ALE CZĘSTE KLASY W MOBILENET:
-      'cauliflower': 'Kalafior 🥦',
-      'artichoke': 'Karczoch / Warzywo 🥬',
-      'spaghetti squash': 'Makaron / Spaghetti 🍝',
-      'dough': 'Ciasto (Surowe) / Wypiek 🥐',
-      'eggnog': 'Koktajl / Napój mleczny 🥛',
-      'chocolate sauce': 'Sos czekoladowy / Deser 🍫',
-      // ABSURDALNE KLASY MOBILENET (AI często myli te przedmioty z jedzeniem wokół nich):
-      'refrigerator': 'Jedzenie z lodówki 🧊',
-      'carton': 'Karton z napojem / Mleko 🧃',
-      'menu': 'Danie z karty 📜',
-      'goblet': 'Kieliszek / Napój 🍷',
-      'cocktail shaker': 'Szejk / Koktajl 🍹',
-      'paper towel': 'Przekąska / Jedzenie z ręki 🥪', // AI widzi ręcznik papierowy pod kanapką
+        // DZIWNE, ALE CZĘSTE KLASY W MOBILENET:
+        'cauliflower': 'Kalafior 🥦',
+        'artichoke': 'Karczoch / Warzywo 🥬',
+        'spaghetti squash': 'Makaron / Spaghetti 🍝',
+        'dough': 'Ciasto (Surowe) / Wypiek 🥐',
+        'eggnog': 'Koktajl / Napój mleczny 🥛',
+        'chocolate sauce': 'Sos czekoladowy / Deser 🍫',
+        // ABSURDALNE KLASY MOBILENET (AI często myli te przedmioty z jedzeniem wokół nich):
+        'refrigerator': 'Jedzenie z lodówki 🧊',
+        'carton': 'Karton z napojem / Mleko 🧃',
+        'menu': 'Danie z karty 📜',
+        'goblet': 'Kieliszek / Napój 🍷',
+        'cocktail shaker': 'Szejk / Koktajl 🍹',
+        'paper towel': 'Przekąska / Jedzenie z ręki 🥪', // AI widzi ręcznik papierowy pod kanapką
 
-      // RZADKIE OWOCE I WARZYWA Z BAZY IMAGENET (wbudowane w Twoje AI):
-      'jackfruit': 'Owoc (Chlebowiec) 🍈',
-      'custard apple': 'Owoc (Cherimoja) 🍈',
-      'butternut squash': 'Dynia 🎃',
-      'acorn squash': 'Dynia 🎃',
-      'cardoon': 'Karczoch / Warzywo 🥬',
-      'mushroom': 'Grzyb / Pieczarka 🍄',
+        // RZADKIE OWOCE I WARZYWA Z BAZY IMAGENET (wbudowane w Twoje AI):
+        'jackfruit': 'Owoc (Chlebowiec) 🍈',
+        'custard apple': 'Owoc (Cherimoja) 🍈',
+        'butternut squash': 'Dynia 🎃',
+        'acorn squash': 'Dynia 🎃',
+        'cardoon': 'Karczoch / Warzywo 🥬',
+        'mushroom': 'Grzyb / Pieczarka 🍄',
 
-      // POZOSTAŁE DANIA Z BAZY AI:
-      'hot pot': 'Gorący kociołek / Zupa 🍲',
-      'pretzel': 'Precel / Przekąska 🥨',
-      'meat loaf': 'Pieczeń mięsna 🥩',
+        // POZOSTAŁE DANIA Z BAZY AI:
+        'hot pot': 'Gorący kociołek / Zupa 🍲',
+        'pretzel': 'Precel / Przekąska 🥨',
+        'meat loaf': 'Pieczeń mięsna 🥩',
 
-      // URZĄDZENIA KUCHENNE (Jeśli zrobisz zdjęcie w kuchni, AI może to złapać):
-      'toaster': 'Tost / Grzanka 🍞',
-      'microwave': 'Danie z mikrofali 🍱',
-      'espresso maker': 'Kawa z ekspresu ☕',
-      'saltshaker': 'Sól / Przyprawy 🧂',
-      'mixing bowl': 'Składniki w misce 🥣',
-      'ladle': 'Zupa (z chochli) 🥣',
-      'wooden spoon': 'Potrawa z łyżki 🥄',
-      'cleaver': 'Mięso (przygotowanie) 🥩',
-      'corkscrew': 'Wino 🍷',
-      'bottle opener': 'Napój z butelki / Piwo 🍺',
+        // URZĄDZENIA KUCHENNE (Jeśli zrobisz zdjęcie w kuchni, AI może to złapać):
+        'toaster': 'Tost / Grzanka 🍞',
+        'microwave': 'Danie z mikrofali 🍱',
+        'espresso maker': 'Kawa z ekspresu ☕',
+        'saltshaker': 'Sól / Przyprawy 🧂',
+        'mixing bowl': 'Składniki w misce 🥣',
+        'ladle': 'Zupa (z chochli) 🥣',
+        'wooden spoon': 'Potrawa z łyżki 🥄',
+        'cleaver': 'Mięso (przygotowanie) 🥩',
+        'corkscrew': 'Wino 🍷',
+        'bottle opener': 'Napój z butelki / Piwo 🍺',
 
-      // MIEJSCA I OTOCZENIE (AI czasem widzi całe tło zamiast posiłku):
-      'dining table': 'Posiłek na stole 🍽️',
-      'bakery': 'Wypieki / Chleb 🥖',
-      'meat market': 'Mięso / Wędliny 🥩',
+        // MIEJSCA I OTOCZENIE (AI czasem widzi całe tło zamiast posiłku):
+        'dining table': 'Posiłek na stole 🍽️',
+        'bakery': 'Wypieki / Chleb 🥖',
+        'meat market': 'Mięso / Wędliny 🥩',
 
-      // BRAKUJĄCE OWOCE / KLASY IMAGENET:
-      'pomegranate': 'Granat 🍎',
-      'ear': 'Kukurydza 🌽',
-      'hip': 'Dzika róża / Owoce 🍒',
-      'acorn': 'Orzechy / Żołędzie 🌰',
-      'red wine': 'Czerwone wino 🍷',
-      'tea cup': 'Filiżanka herbaty 🫖',
-      'beer glass': 'Kufel piwa 🍺',
+        // BRAKUJĄCE OWOCE / KLASY IMAGENET:
+        'pomegranate': 'Granat 🍎',
+        'ear': 'Kukurydza 🌽',
+        'hip': 'Dzika róża / Owoce 🍒',
+        'acorn': 'Orzechy / Żołędzie 🌰',
+        'red wine': 'Czerwone wino 🍷',
+        'tea cup': 'Filiżanka herbaty 🫖',
+        'beer glass': 'Kufel piwa 🍺',
 
-      // RESZTKI BAZY IMAGENET: SPRZĘT I NARZĘDZIA KUCHENNE:
-      'strainer': 'Makaron / Odcedzone jedzenie 🍝',
-      'colander': 'Warzywa w durszlaku 🥦',
-      'crock pot': 'Gulasz / Wolnowar 🍲',
-      'spatula': 'Potrawa z patelni 🍳',
-      'can opener': 'Konserwa / Puszka jedzenia 🥫',
-      'beaker': 'Płyn / Napój 🥤',
-      'vase': 'Woda / Napój 💧', // Czasem AI myli dzbanek z wazonem
+        // RESZTKI BAZY IMAGENET: SPRZĘT I NARZĘDZIA KUCHENNE:
+        'strainer': 'Makaron / Odcedzone jedzenie 🍝',
+        'colander': 'Warzywa w durszlaku 🥦',
+        'crock pot': 'Gulasz / Wolnowar 🍲',
+        'spatula': 'Potrawa z patelni 🍳',
+        'can opener': 'Konserwa / Puszka jedzenia 🥫',
+        'beaker': 'Płyn / Napój 🥤',
+        'vase': 'Woda / Napój 💧', // Czasem AI myli dzbanek z wazonem
 
-      // RESZTKI BAZY IMAGENET: SUROWE SKŁADNIKI I ZWIERZĘTA (Jako jedzenie):
-      'dungeness crab': 'Krab / Owoce morza 🦀',
-      'american lobster': 'Homar 🦞',
-      'king crab': 'Krab Królewski 🦀',
-      'crayfish': 'Rak / Owoce morza 🦞',
-      'hen': 'Drób / Kurczak 🍗',
-      'cock': 'Drób / Kurczak 🍗',
-      'pig': 'Wieprzowina 🥩',
-      'ox': 'Wołowina 🥩',
+        // RESZTKI BAZY IMAGENET: SUROWE SKŁADNIKI I ZWIERZĘTA (Jako jedzenie):
+        'dungeness crab': 'Krab / Owoce morza 🦀',
+        'american lobster': 'Homar 🦞',
+        'king crab': 'Krab Królewski 🦀',
+        'crayfish': 'Rak / Owoce morza 🦞',
+        'hen': 'Drób / Kurczak 🍗',
+        'cock': 'Drób / Kurczak 🍗',
+        'pig': 'Wieprzowina 🥩',
+        'ox': 'Wołowina 🥩',
 
-      // DODATKOWE BŁĘDY AI DLA OPAKOWAŃ:
-      'envelope': 'Herbata w torebce 🫖', // AI myli płaską torebkę herbaty z kopertą
+        // DODATKOWE BŁĘDY AI DLA OPAKOWAŃ:
+        'envelope': 'Herbata w torebce 🫖', // AI myli płaską torebkę herbaty z kopertą
 
-      // HALUCYNACJE KUCHENNE IMAGENET:
-      'whisk': 'Masa / Ciasto 🥣',
-      'can, tin, tin can': 'Konserwa / Puszka jedzenia 🥫',
-      'pill bottle': 'Witaminy / Suplementy 💊',
-      'hair spray': 'Bita śmietana / Spray do smażenia 🧴', // AI myli puszki ze sprayem!
-      'barrel, cask': 'Beczka wina / Piwa 🍺',
-      'bucket, pail': 'Kubełek jedzenia (KFC itp.) 🍗',
+        // HALUCYNACJE KUCHENNE IMAGENET:
+        'whisk': 'Masa / Ciasto 🥣',
+        'can, tin, tin can': 'Konserwa / Puszka jedzenia 🥫',
+        'pill bottle': 'Witaminy / Suplementy 💊',
+        'hair spray': 'Bita śmietana / Spray do smażenia 🧴', // AI myli puszki ze sprayem!
+        'barrel, cask': 'Beczka wina / Piwa 🍺',
+        'bucket, pail': 'Kubełek jedzenia (KFC itp.) 🍗',
 
-      // HALUCYNACJE ZWIERZĘCE IMAGENET (AI widzi zwierzę zamiast dania z niego):
-      'ostrich': 'Drób / Mięso 🥩',
-      'partridge': 'Dzikie ptactwo / Mięso 🍗',
-      'quail': 'Przepiórka / Jajka 🥚',
-      'hare': 'Dziczyzna / Mięso 🥩',
-      'ram, tup': 'Baranina 🥩',
-      'bighorn, bighorn sheep': 'Baranina 🥩',
-      'slug': 'Ślimak / Przekąska 🐌',
-      'conch': 'Owoce morza 🐚',
-      'sea cucumber': 'Owoce morza 🥒',
-      'jellyfish': 'Żelki / Przekąska 🍬', // AI myli meduzy z żelkami
-      'starfish': 'Ciasteczko / Wypiek ⭐', // AI myli rozgwiazdy z ciastkami w kształcie gwiazdek
+        // HALUCYNACJE ZWIERZĘCE IMAGENET (AI widzi zwierzę zamiast dania z niego):
+        'ostrich': 'Drób / Mięso 🥩',
+        'partridge': 'Dzikie ptactwo / Mięso 🍗',
+        'quail': 'Przepiórka / Jajka 🥚',
+        'hare': 'Dziczyzna / Mięso 🥩',
+        'ram, tup': 'Baranina 🥩',
+        'bighorn, bighorn sheep': 'Baranina 🥩',
+        'slug': 'Ślimak / Przekąska 🐌',
+        'conch': 'Owoce morza 🐚',
+        'sea cucumber': 'Owoce morza 🥒',
+        'jellyfish': 'Żelki / Przekąska 🍬', // AI myli meduzy z żelkami
+        'starfish': 'Ciasteczko / Wypiek ⭐', // AI myli rozgwiazdy z ciastkami w kształcie gwiazdek
 
-      // HALUCYNACJE GRZYBOWE I ROŚLINNE:
-      'agaric': 'Grzyb jadalny 🍄',
-      'gyromitra': 'Grzyb / Potrawa 🍄',
-      'stinkhorn': 'Grzyb / Potrawa 🍄',
-      'earthstar': 'Grzyb / Potrawa 🍄',
-      'hen-of-the-woods': 'Grzyb Maitake 🍄',
-      'bolete': 'Borowik / Grzyb 🍄',
-      'daisy': 'Jadalne kwiaty / Dekoracja 🌼',
+        // HALUCYNACJE GRZYBOWE I ROŚLINNE:
+        'agaric': 'Grzyb jadalny 🍄',
+        'gyromitra': 'Grzyb / Potrawa 🍄',
+        'stinkhorn': 'Grzyb / Potrawa 🍄',
+        'earthstar': 'Grzyb / Potrawa 🍄',
+        'hen-of-the-woods': 'Grzyb Maitake 🍄',
+        'bolete': 'Borowik / Grzyb 🍄',
+        'daisy': 'Jadalne kwiaty / Dekoracja 🌼',
 
-      // HALUCYNACJE WIDOKÓW (AI widzi sklep lub sprzęt):
-      'grocery store, grocery, food market, market': 'Zakupy spożywcze 🛒',
-      'shopping cart': 'Koszyk z zakupami 🛒',
-      'bakery, bakeshop, bakehouse': 'Wypieki / Pieczywo 🥖',
-      'dishwasher, dish washer, dishwashing machine': 'Brudne naczynia / Posiłek 🍽️',
-      'apron': 'Gotowanie / Kucharz 👨‍🍳'
+        // HALUCYNACJE WIDOKÓW (AI widzi sklep lub sprzęt):
+        'grocery store, grocery, food market, market': 'Zakupy spożywcze 🛒',
+        'shopping cart': 'Koszyk z zakupami 🛒',
+        'bakery, bakeshop, bakehouse': 'Wypieki / Pieczywo 🥖',
+        'dishwasher, dish washer, dishwashing machine': 'Brudne naczynia / Posiłek 🍽️',
+        'apron': 'Gotowanie / Kucharz 👨‍🍳'
     };
 
     const lower = eng.toLowerCase();
     for (let key in dict) if (lower.includes(key)) return dict[key];
     return `Coś do jedzenia (${eng})`;
-  };
+};
 
-  export { translate };
-  export {foodKeywords};
+export { translate };
+export { foodKeywords };

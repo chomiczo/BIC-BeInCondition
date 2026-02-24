@@ -1,11 +1,9 @@
-// plik: src/ProfileView.jsx
-import React from 'react';
-
-export default function ProfileView({ 
-    name, age, weight, height, goal, bmi, bmiStatus, streak, finalCalories, 
-    consumedCalories, avatar, history, chartData, selectedBar, setSelectedBar, 
-    selectedWaterBar, setSelectedWaterBar, handleAvatarChange, handleExportData, 
-    handleImportData, handleFullReset, setStep 
+export default function ProfileView({
+    name, age, weight, height, goal, bmi, bmiStatus, streak, finalCalories,
+    consumedCalories, avatar, history, chartData, selectedBar, setSelectedBar,
+    selectedWaterBar, setSelectedWaterBar, handleAvatarChange, handleExportData,
+    handleImportData, handleFullReset, setStep,
+    weightHistory, handleUpdateWeight
 }) {
     return (
         <div className="px-6 animate-in slide-in-from-right duration-300 pb-20">
@@ -61,6 +59,45 @@ export default function ProfileView({
                         <p className="text-2xl font-black text-white italic mt-1">{streak} <span className="text-[10px] text-slate-500 font-bold uppercase not-italic">dni</span></p>
                     </div>
                 </div>
+
+                {/* HISTORIA WAGI */}
+                <div className="mb-10 bg-black/40 p-6 rounded-[3rem] border border-white/5 shadow-inner relative">
+                    <div className="flex justify-between items-center mb-6">
+                        <div>
+                            <h4 className="text-[10px] text-slate-500 font-black uppercase tracking-[0.3em]">Progres</h4>
+                            <p className="text-xl font-black text-white italic mt-1">Twoja Waga</p>
+                        </div>
+                        <button onClick={handleUpdateWeight} className="bg-emerald-500/20 text-[#00E676] px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest active:scale-95 border border-emerald-500/30">
+                            Aktualizuj
+                        </button>
+                    </div>
+
+                    {weightHistory && weightHistory.length > 0 ? (
+                        <div className="flex gap-3 overflow-x-auto pb-4 snap-x hide-scrollbar">
+                            {weightHistory.map((record, idx) => {
+                                // Obliczanie różnicy w stosunku do poprzedniego wpisu
+                                const prevRecord = weightHistory[idx + 1];
+                                const diff = prevRecord ? (record.weight - prevRecord.weight).toFixed(1) : 0;
+                                const isLoss = diff < 0;
+
+                                return (
+                                    <div key={idx} className="min-w-[100px] bg-[#161618] p-4 rounded-3xl border border-white/5 snap-center flex flex-col items-center justify-center shadow-md relative">
+                                        <p className="text-[9px] text-slate-500 font-bold uppercase mb-1">{record.date.substring(0, 5)}</p>
+                                        <p className="text-xl font-black text-white italic">{record.weight}</p>
+                                        {diff !== 0 && prevRecord && (
+                                            <span className={`text-[9px] font-black mt-1 ${isLoss ? 'text-[#00E676]' : 'text-red-400'}`}>
+                                                {isLoss ? '↓' : '↑'} {Math.abs(diff)}kg
+                                            </span>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        <p className="text-xs text-slate-500 italic text-center pb-2">Zaktualizuj wagę, aby zobaczyć progres.</p>
+                    )}
+                </div>
+
 
                 {/* WYKRES KALORII */}
                 <div className="mb-10 bg-black/40 p-6 rounded-[3rem] border border-white/5 shadow-inner">
@@ -194,3 +231,4 @@ export default function ProfileView({
         </div>
     );
 }
+

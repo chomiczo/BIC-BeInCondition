@@ -1,5 +1,3 @@
-// src/calculator.js
-
 export const calculateBMR = (gender, weight, height, age) => {
   let bmr = (10 * weight) + (6.25 * height) - (5 * age);
   if (gender === 'male') {
@@ -15,7 +13,7 @@ export const calculateTDEE = (bmr, pal) => {
 };
 
 export const calculateFinalGoal = (tdee, goal) => {
-  const deficitOrSurplus = 400; 
+  const deficitOrSurplus = 400;
   switch (goal) {
     case 'lose': return tdee - deficitOrSurplus;
     case 'gain': return tdee + deficitOrSurplus;

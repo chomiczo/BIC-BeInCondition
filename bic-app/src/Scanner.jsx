@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Html5Qrcode } from "html5-qrcode";
-import { GoogleGenerativeAI } from "@google/generative-ai"; // Import Gemini API
-import { translate, foodKeywords } from './dictionary';
+import { translate } from './dictionary';
+import { fetchBarcodeData, askGeminiForMacros } from './api'; // Import logiki skanera z api.js
 
 export default function Scanner({ onClose, onScan }) {
   const [tab, setTab] = useState('barcode');
@@ -11,13 +11,39 @@ export default function Scanner({ onClose, onScan }) {
 
   const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [weight, setWeight] = useState(100);
   const [manualCode, setManualCode] = useState('');
   const [foundProduct, setFoundProduct] = useState({ name: '', kcalPer100g: 0, protein: 0, carbs: 0, fat: 0, fullWeight: 0 });
 
   const [manualName, setManualName] = useState('');
-
+  const [isListening, setIsListening] = useState(false);
   const aiModel = window.globalAiModel;
+
+  const startListening = () => {
+    console.log("Kliknięto mikrofon! Sprawdzam uprawnienia...");
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setErrorMessage("Twoja przeglądarka nie obsługuje mikrofonu. Użyj Chrome lub Safari.");
+      setStatus('error');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'pl-PL';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onresult = (event) => {
+      const speechResult = event.results[0][0].transcript;
+      setManualName(prev => prev ? prev + ' ' + speechResult : speechResult);
+    };
+    recognition.onerror = (event) => {
+      console.error("Błąd mikrofonu:", event.error);
+      setIsListening(false);
+    };
+    recognition.onend = () => setIsListening(false);
+    recognition.start();
+  };
 
   useEffect(() => {
     let html5QrCode;
@@ -37,7 +63,7 @@ export default function Scanner({ onClose, onScan }) {
               if (!isProcessingRef.current) {
                 isProcessingRef.current = true;
                 html5QrCode.pause(true);
-                fetchProduct(text);
+                handleBarcodeScan(text); // Zmiana wywołania
               }
             }
           );
@@ -56,48 +82,18 @@ export default function Scanner({ onClose, onScan }) {
     };
   }, [tab]);
 
-  const fetchProduct = async (code) => {
+  // Czyste funkcje korzystające z API
+  const handleBarcodeScan = async (code) => {
     setStatus('loading');
-    try {
-      const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json`);
-      const data = await res.json();
-      if (data.status === 1) {
-
-        // Produkt z bazy, ale bez kalorii (np. puste dane / błąd) ---
-        if (!data.product.nutriments || Object.keys(data.product.nutriments).length === 0) {
-          setErrorMessage("Znaleziono produkt, ale nie ma on wartości odżywczych w bazie! Czy to na pewno jedzenie?");
-          setStatus('error');
-          isProcessingRef.current = false;
-          if (scannerRef.current) scannerRef.current.resume();
-          return;
-        }
-
-        const nutriments = data.product.nutriments;
-        const kcal = nutriments['energy-kcal_100g'] || 0;
-        const protein = nutriments['proteins_100g'] || 0;
-        const carbs = nutriments['carbohydrates_100g'] || 0;
-        const fat = nutriments['fat_100g'] || 0;
-
-        setFoundProduct({
-          name: data.product.product_name || "Nieznany produkt",
-          kcalPer100g: Math.round(kcal),
-          protein: Math.round(protein),
-          carbs: Math.round(carbs),
-          fat: Math.round(fat)
-        });
-        setStatus('result');
-
-      } else {
-        // Kodu kreskowego nie ma w ogóle w bazie żywności ---
-        setErrorMessage(`Kod ${code} nie istnieje w bazie żywności. Czy to na pewno jedzenie?`);
-        setStatus('error');
-        isProcessingRef.current = false;
-        if (scannerRef.current) scannerRef.current.resume();
-      }
-    } catch (e) {
-      isProcessingRef.current = false;
+    const result = await fetchBarcodeData(code);
+    if (result.error) {
+      setErrorMessage(result.error);
       setStatus('error');
-      setErrorMessage("Błąd skanowania kodu. Spróbuj ponownie.");
+      isProcessingRef.current = false;
+      if (scannerRef.current) scannerRef.current.resume();
+    } else {
+      setFoundProduct(result);
+      setStatus('result');
     }
   };
 
@@ -107,100 +103,50 @@ export default function Scanner({ onClose, onScan }) {
     const predictions = await aiModel.classify(videoRef.current);
     const topResult = predictions[0].className.toLowerCase();
 
-    try {
-      // INTELIGENTNA ANALIZA ZDJĘCIA PRZEZ GEMINI
-      const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
-      const prompt = `Prosty system wizyjny rozpoznał obiekt na zdjęciu jako: "${topResult}". Przetłumacz to na język polski jako rodzaj posiłku. Oszacuj kaloryczność i makroskładniki w 100g. 
+    const prompt = `Prosty system wizyjny rozpoznał obiekt na zdjęciu jako: "${topResult}". Przetłumacz to na język polski jako rodzaj posiłku. Oszacuj kaloryczność i makroskładniki w 100g. 
       Odpowiedz DOKŁADNIE w formacie: NAZWA | KALORIE | BIAŁKO | WĘGLOWODANY | TŁUSZCZE (np. Banan | 89 | 1 | 23 | 0). 
       Jeśli to nie jest jedzenie, zwróć dokładnie słowo: BŁĄD.`;
 
-      const result = await model.generateContent(prompt);
-      const responseText = result.response.text().trim();
-      const parts = responseText.split('|');
+    const result = await askGeminiForMacros(prompt);
 
-      if (parts[0].toUpperCase().includes("BŁĄD") || parts[0].toUpperCase().includes("BLAD")) {
-        setErrorMessage(`AI wykryło: "${topResult}". To absolutnie nie wygląda na jedzenie!`);
-        setStatus('error');
-        return;
-      }
-
-      if (parts.length >= 5) {
-        const aiName = parts[0].trim();
-        const aiKcal = parseInt(parts[1].replace(/\D/g, '')) || 0;
-        const aiPro = parseInt(parts[2].replace(/\D/g, '')) || 0;
-        const aiCarbs = parseInt(parts[3].replace(/\D/g, '')) || 0;
-        const aiFat = parseInt(parts[4].replace(/\D/g, '')) || 0;
-
-        setFoundProduct({ name: aiName, kcalPer100g: aiKcal, protein: aiPro, carbs: aiCarbs, fat: aiFat });
-        setStatus('result');
-      } else {
+    if (result.error) {
+      if (result.error.includes("To nie wygląda jak jedzenie")) {
+        // Powrót do starej logiki dla obiektów
         setManualName("Danie ze zdjęcia (Popraw nazwę)");
         setTab('manual');
         setStatus('idle');
+      } else {
+        // Błąd API lub awaria - używa zapasowego słownika offline
+        const nameFallback = translate(topResult);
+        setFoundProduct({ name: nameFallback, kcalPer100g: nameFallback.includes('Merci') ? 646 : 250, protein: 0, carbs: 0, fat: 0, fullWeight: 0 });
+        setStatus('result');
       }
-    } catch (e) {
-      // Jeśli AI nie odpowiada, używamy starego awaryjnego słownika
-      const name = translate(topResult);
-      setFoundProduct({ name: name, kcalPer100g: name.includes('Merci') ? 646 : 250, fullWeight: 0 });
+    } else {
+      setFoundProduct(result);
       setStatus('result');
     }
   };
 
-  // --- NOWA FUNKCJA: INTELIGENTNE SZACOWANIE KALORII (GEMINI) ---
   const handleSmartManualEntry = async () => {
     if (!manualName.trim()) return;
     setStatus('loading');
-    // === TEST PRAWDY ===
-
-    try {
-      // Inicjalizacja Gemini przy użyciu klucza z pliku .env
-      const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
-      // 1. USZTYWNIONY PROMPT (Ochrona przed bzdurami)
-      const prompt = `Jako profesjonalny dietetyk, oszacuj całkowitą kaloryczność i makroskładniki tego posiłku: "${manualName}". 
+    const prompt = `Jako profesjonalny dietetyk, oszacuj całkowitą kaloryczność i makroskładniki tego posiłku: "${manualName}". 
       ZASADA 1: Jeśli tekst NIE JEST jedzeniem, zwróć TYLKO słowo: BŁĄD. 
       ZASADA 2: Jeśli to jedzenie, zwróć wynik DOKŁADNIE w formacie: KALORIE | BIAŁKO | WĘGLOWODANY | TŁUSZCZE (np. 450 | 25 | 40 | 15). 
       Zwróć TYLKO same liczby całkowite oddzielone znakiem |. Nie dodawaj słów "kcal" ani "g".`;
 
-      const result = await model.generateContent(prompt);
-      const responseText = result.response.text().trim();
+    const result = await askGeminiForMacros(prompt);
 
-      if (responseText.toUpperCase().includes("BŁĄD") || responseText.toUpperCase().includes("BLAD")) {
-        setErrorMessage("To nie wygląda jak jedzenie ani napój! Wpisz poprawny posiłek.");
-        setStatus('error');
-        return;
-      }
-
-      const parts = responseText.split('|');
-      if (parts.length >= 4) {
-        setFoundProduct({
-          name: manualName,
-          kcalPer100g: parseInt(parts[0].replace(/\D/g, '')) || 0,
-          protein: parseInt(parts[1].replace(/\D/g, '')) || 0,
-          carbs: parseInt(parts[2].replace(/\D/g, '')) || 0,
-          fat: parseInt(parts[3].replace(/\D/g, '')) || 0
-        });
-        setWeight(100);
-        setStatus('result');
-      } else {
-        setErrorMessage("AI nie zrozumiało posiłku. Spróbuj opisać go dokładniej.");
-        setStatus('error');
-      }
-    } catch (error) {
-      console.error(error);
-      // ZMIANA: Pokazujemy prawdziwy powód zablokowania przez Google
-      if (error.message && error.message.includes("429")) {
-        setErrorMessage("Zbyt wiele pytań do AI pod rząd. Odczekaj 30 sekund.");
-      } else {
-        setErrorMessage(`Problem z połączeniem: ${error.message}`);
-      }
+    if (result.error) {
+      setErrorMessage(result.error);
       setStatus('error');
+    } else {
+      setFoundProduct({ name: manualName, ...result });
+      setStatus('result');
     }
   };
 
+  // ----- PONIŻEJ TYLKO HTML (BEZ ZMIAN) -----
   return (
     <div className="fixed inset-0 bg-[#0d0d12] z-[200] flex flex-col items-center justify-start text-white overflow-y-auto pb-10">
       <div className="flex bg-[#1a1a1a] p-4 gap-2 border-b border-white/10 w-full sticky top-0 z-50">
@@ -212,7 +158,6 @@ export default function Scanner({ onClose, onScan }) {
       <div className="flex-1 flex flex-col items-center justify-center p-6 w-full max-w-sm mx-auto">
         {status === 'idle' && tab !== 'manual' && (
           <div className="w-full flex flex-col items-center animate-in zoom-in">
-            {/* Poprawione wyśrodkowanie okna kamery */}
             <div className="w-full flex justify-center">
               <div id="reader" className={`${tab === 'barcode' ? 'block' : 'hidden'} w-full max-w-[300px] rounded-[3rem] border-2 border-[#00E676]/30 aspect-square overflow-hidden bg-black shadow-2xl relative mx-auto`}></div>
             </div>
@@ -225,28 +170,34 @@ export default function Scanner({ onClose, onScan }) {
 
             {tab === 'ai' && <button onClick={handleAiCapture} className="mt-8 w-20 h-20 rounded-full bg-[#00E676] text-black shadow-2xl active:scale-90 flex items-center justify-center border-[6px] border-[#0d0d12] mx-auto">📷</button>}
 
-            {/* ZWRÓCONE RĘCZNE WPISYWANIE KODU KRESKOWEGO */}
             {tab === 'barcode' && (
               <div className="flex gap-2 p-1 bg-white/5 rounded-3xl border border-white/10 mt-10 w-full max-w-[300px] italic mx-auto shadow-lg">
                 <input type="text" placeholder="Wpisz kod ręcznie..." className="flex-1 bg-transparent p-4 outline-none text-xs text-[#00E676] font-bold" value={manualCode} onChange={(e) => setManualCode(e.target.value)} />
-                <button onClick={() => fetchProduct(manualCode)} className="bg-white text-black px-6 rounded-2xl font-black text-xs uppercase active:scale-95 transition-transform">ok</button>
+                <button onClick={() => handleBarcodeScan(manualCode)} className="bg-white text-black px-6 rounded-2xl font-black text-xs uppercase active:scale-95 transition-transform">ok</button>
               </div>
             )}
           </div>
         )}
 
-        {/* NOWOŚĆ: INTELIGENTNY FORMULARZ RĘCZNY Z LLM */}
         {tab === 'manual' && status === 'idle' && (
           <div className="w-full bg-[#1c1c24] p-8 rounded-[3.5rem] border border-white/10 shadow-2xl animate-in zoom-in flex flex-col gap-6">
             <h2 className="text-xl font-black italic uppercase text-center mb-2">Opisz co zjadłeś</h2>
             <p className="text-[10px] text-gray-500 text-center uppercase tracking-widest -mt-4 mb-2">AI wyliczy za Ciebie kalorie</p>
 
-            <textarea
-              placeholder="np. 2 kromki chleba razowego z masłem, serem żółtym i pomidorem"
-              className="bg-black/40 p-5 rounded-3xl outline-none text-white font-bold border border-white/5 placeholder-gray-600 h-32 resize-none text-sm"
-              value={manualName}
-              onChange={(e) => setManualName(e.target.value)}
-            />
+            <div className="relative w-full">
+              <textarea
+                placeholder="np. 2 kromki chleba z serem..."
+                className="bg-black/40 p-5 pr-16 rounded-3xl outline-none text-white font-bold border border-white/5 placeholder-gray-600 h-32 resize-none text-sm w-full"
+                value={manualName}
+                onChange={(e) => setManualName(e.target.value)}
+              />
+              <button
+                onClick={startListening}
+                className={`absolute bottom-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-lg ${isListening ? 'bg-red-500 animate-pulse text-white scale-110' : 'bg-[#00E676]/20 text-[#00E676] hover:bg-[#00E676]/40 active:scale-95'}`}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.39-.9.88 0 2.76-2.24 5.01-5.01 5.01s-5.01-2.25-5.01-5.01c0-.49-.41-.88-.9-.88s-.89.39-.89.88c0 3.16 2.45 5.76 5.51 6.13V20h-3c-.55 0-1 .45-1 1s.45 1 1 1h8c.55 0 1-.45 1-1s-.45-1-1-1h-3v-1.98c3.06-.37 5.51-2.97 5.51-6.13 0-.49-.4-.88-.89-.88z" /></svg>
+              </button>
+            </div>
 
             <button onClick={handleSmartManualEntry} className="w-full py-6 bg-gradient-to-r from-[#00E676] to-teal-400 text-black font-black rounded-3xl uppercase tracking-widest shadow-lg active:scale-95 mt-2 flex items-center justify-center gap-2">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
