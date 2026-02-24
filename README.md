@@ -9,8 +9,6 @@
 
 **BIC (Be In Condition)** to nowoczesna, inteligentna aplikacja dietetyczna typu PWA (Progressive Web App). Została stworzona, aby maksymalnie uprościć śledzenie spożytych kalorii i makroskładników przy użyciu najnowszych technologii: sztucznej inteligencji, rozpoznawania obrazu w czasie rzeczywistym i przetwarzania mowy.
 
-Aplikacja została zaprojektowana z rygorystycznym naciskiem na czysty kod, modułowość oraz zasady **SOLID**.
-
 🔗 **Wersja Live (Demo):** [https://bic-updated.surge.sh](https://bic-updated.surge.sh)
 
 ---
