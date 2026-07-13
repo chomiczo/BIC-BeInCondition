@@ -67,11 +67,18 @@ Ponieważ projekt został zbudowany jako Progressive Web App, nie musisz pobiera
 ---
 
 ## Poglądowe zdjęcia
-<img width="404" height="922" alt="Image" src="https://github.com/user-attachments/assets/9a703dc3-ba36-41f0-a45d-121090128b94" />
-<img width="414" height="943" alt="Image" src="https://github.com/user-attachments/assets/db54f8fe-f05c-44aa-8f24-30e6038d7222" />
-<img width="380" height="842" alt="Image" src="https://github.com/user-attachments/assets/e3c7e2af-b225-4e99-9674-b3d4b4c52379" />
-<img width="370" height="936" alt="Image" src="https://github.com/user-attachments/assets/d4b15922-8b2a-411e-b1df-49d768aacc77" />
-<img width="1861" height="933" alt="Image" src="https://github.com/user-attachments/assets/557280e8-9d80-41c7-80cb-462d94df2370" />
+<div align="center">
+  <!-- Pierwszy rząd: 4 widoki mobilne / pionowe -->
+  <img src="https://github.com/user-attachments/assets/9a703dc3-ba36-41f0-a45d-121090128b94" width="200" style="margin: 5px;">
+  <img src="https://github.com/user-attachments/assets/db54f8fe-f05c-44aa-8f24-30e6038d7222" width="200" style="margin: 5px;">
+  <img src="https://github.com/user-attachments/assets/e3c7e2af-b225-4e99-9674-b3d4b4c52379" width="200" style="margin: 5px;">
+  <img src="https://github.com/user-attachments/assets/d4b15922-8b2a-411e-b1df-49d768aacc77" width="200" style="margin: 5px;">
+  
+  <br><br>
+  
+  <!-- Drugi rząd: Szeroki widok skanera -->
+  <img src="https://github.com/user-attachments/assets/557280e8-9d80-41c7-80cb-462d94df2370" width="850" style="margin: 5px;">
+</div>
 
 ## 🚀 Uruchomienie lokalne
 
